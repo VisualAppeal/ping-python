@@ -1,0 +1,52 @@
+{
+    "logging": 30,
+    "email": {
+        "host": "smtp.mailgun.org",
+        "port": 465,
+        "username": "",
+        "password": ""
+    },
+    "sites": [
+        {
+            "name": "My Website",
+            "checks": [
+                {
+                    "type": "ping_ipv4",
+                    "enabled": true,
+                    "options": {
+                        "ip": "123.456.789.0"
+                    }
+                },
+                {
+                    "type": "ping_ipv6",
+                    "enabled": true,
+                    "options": {
+                        "ip": "0000:123:4567:abcd::1"
+                    }
+                },
+                {
+                    "type": "https",
+                    "enabled": true,
+                    "options": {
+                        "validate_ssl": true,
+                        "urls": [
+                            "https://www.google.de",
+                            "https://accounts.google.de"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "alerts": [
+        {
+            "type": "email",
+            "from": "root@example.com",
+            "to": "webmaster@example.com"
+        },
+        {
+            "type": "slack",
+            "url": "https://hooks.slack.com/services/abc/def/ghi"
+        }
+    ]
+}

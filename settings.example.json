@@ -29,6 +29,7 @@
                     "enabled": true,
                     "options": {
                         "validate_ssl": true,
+                        "timeout": 5,
                         "urls": [
                             "https://www.google.de",
                             "https://accounts.google.de"

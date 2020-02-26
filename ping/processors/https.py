@@ -7,11 +7,11 @@ from dateutil import parser
 import requests
 
 
-def check_http(url, validate_ssl=True):
+def check_http(url, timeout=3, validate_ssl=True):
     logging.debug("Validating url %s for SSL errors" % url)
 
     try:
-        response = requests.get(url, timeout=3)
+        response = requests.get(url, timeout=timeout)
         response.raise_for_status()
     except requests.exceptions.SSLError as e:
         if not validate_ssl:
@@ -84,7 +84,12 @@ def process(site):
     message = []
 
     for url in site["urls"]:
-        result = check_http(url, site["validate_ssl"] if "validate_ssl" in site else False)
+        result = check_http(
+            url,
+            site["timeout"] if "timeout" in site else 3,
+            site["validate_ssl"] if "validate_ssl" in site else False
+        )
+
         if not result["success"]:
             success = False
             message.append(result["message"])

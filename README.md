@@ -2,14 +2,24 @@
 
 Website, server, certificate uptime/validation monitor.
 
-## Install
+## Docker
+
+Create and adjust settings: `cp settings.example.json settings.json`
+
+Build image: `docker build -t ping .`
+
+Run image: `docker run ping`
+
+## Without docker
+
+### Install
 
 * `python3 -m venv venv`
 * `source venv/bin/activate` 
 * `pip install -r requirements.txt`
 * `cp settings.example.json settings.json`
 
-## Run
+### Run
 
 `python3 -m ping.ping ping/ping.py`
 

@@ -49,14 +49,14 @@ def check_ssl_expiration(url, days):
 
     parsed_uri = urlparse(url)
     hostname = '{uri.netloc}'.format(uri=parsed_uri)
-    PORT = 443
+    port = 443
     context = ssl.create_default_context()
 
-    with socket.create_connection((hostname, PORT), timeout=3) as sock:
+    with socket.create_connection((hostname, port), timeout=3) as sock:
         with context.wrap_socket(sock, server_hostname=hostname) as ssock:
             cert_details = ssock.getpeercert()
 
-            if not "notAfter" in cert_details:
+            if "notAfter" not in cert_details:
                 return {
                     "success": False,
                     "message": "No 'notAfter' field in certificate!"

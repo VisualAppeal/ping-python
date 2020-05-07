@@ -14,33 +14,39 @@ settings = {}
 
 
 def send_alert(site_name, check_type, message):
+    global settings
+
     for alert in settings["alerts"]:
         subject = "%s (%s)" % (site_name, check_type)
         body = "Failed check %s for %s:\n\n%s" % (check_type, site_name, message)
 
-        if alert["type"] == "email":
-            alert_email.send(alert["from"], alert["to"], subject, body)
-        elif alert["type"] == "slack":
-            alert_slack.send(alert["url"], subject, body)
-        else:
-            logging.error("Unknown alert type %s!" % alert["type"])
+        try:
+            if alert["type"] == "email":
+                alert_email.send(alert["from"], alert["to"], subject, body)
+            elif alert["type"] == "slack":
+                alert_slack.send(alert["url"], subject, body)
+            else:
+                logging.error("Unknown alert type %s!" % alert["type"])
+        except Exception as e:
+            logging.error("Could not send alert!")
+            raise e
 
 
 def check_site(site):
     logging.info("Processing " + site["name"] + "...")
 
     # Get the number of checks to perform
-    checkCount = len(site["checks"])
-    if checkCount == 0:
+    check_count = len(site["checks"])
+    if check_count == 0:
         logging.warning("No checks to perform!")
         return
 
-    currentCheck = 0
+    current_check = 0
 
     # Perform all checks for site
     for check in site["checks"]:
-        currentCheck += 1
-        logging.info("Performing check %s %d/%d..." % (check["type"], currentCheck, checkCount))
+        current_check += 1
+        logging.info("Performing check %s %d/%d..." % (check["type"], current_check, check_count))
 
         # Skip check
         if not check["enabled"]:
@@ -69,13 +75,15 @@ def check_site(site):
             send_alert(site["name"], check["type"], result["message"])
 
 
-if __name__ == "__main__":
+def start_checks():
+    global settings
+
     filename = os.path.dirname(os.path.realpath(__file__)) + "/../settings.json"
 
     try:
         with open(filename, mode="r") as f:
             settings = json.load(f)
-    except json.JSONDecodeError as e:
+    except json.JSONDecodeError:
         logging.critical("Invalid formatted settings file!")
         exit(1)
 
@@ -96,4 +104,9 @@ if __name__ == "__main__":
     alert_email.close()
 
     logging.info("Done.")
+
+
+if __name__ == "__main__":
+    start_checks()
+
     exit(0)

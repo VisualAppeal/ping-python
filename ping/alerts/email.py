@@ -8,11 +8,17 @@ smtp_server = None
 def init(host, port, username, password):
     global smtp_server
 
-    smtp_server = smtplib.SMTP_SSL(host, port)
-    smtp_server.login(username, password)
+    try:
+        smtp_server = smtplib.SMTP_SSL(host, port)
+        smtp_server.login(username, password)
+    except Exception as e:
+        logging.error('Could not connect to email server!')
+        raise e
 
 
 def send(sender, target, subject, text):
+    global smtp_server
+
     if smtp_server is None:
         logging.error("Email server not initialized!")
         return
@@ -26,5 +32,10 @@ def send(sender, target, subject, text):
 
 
 def close():
-    if smtp_server is not None:
-        smtp_server.quit()
+    global smtp_server
+
+    if smtp_server is None:
+        logging.error("Email server not initialized!")
+        return
+
+    smtp_server.quit()

@@ -1,0 +1,45 @@
+{
+    "logging": 30,
+    "email": {
+        "host": "smtp.mailgun.org",
+        "port": 465,
+        "username": "",
+        "password": ""
+    },
+    "sites": [
+        {
+            "name": "My Website",
+            "checks": [
+                {
+                    "type": "ping_ipv4",
+                    "enabled": true,
+                    "options": {
+                        "ip": "8.8.8.8"
+                    }
+                },
+                {
+                    "type": "https",
+                    "enabled": true,
+                    "options": {
+                        "validate_ssl": true,
+                        "timeout": 5,
+                        "urls": [
+                            "https://expired.badssl.com/"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "alerts": [
+        {
+            "type": "email",
+            "from": "root@example.com",
+            "to": "webmaster@example.com"
+        },
+        {
+            "type": "slack",
+            "url": "https://hooks.slack.com/services/abc/def/ghi"
+        }
+    ]
+}

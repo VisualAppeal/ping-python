@@ -1,6 +1,6 @@
 FROM python:3.8
 
-MAINTAINER tim@visualappeal.de
+MAINTAINER VisualAppeal <tim@visualappeal.de>
 
 COPY ping /ping/ping
 COPY requirements.txt /ping/requirements.txt

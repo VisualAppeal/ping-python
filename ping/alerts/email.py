@@ -1,15 +1,15 @@
-import smtplib
+from smtplib import SMTP_SSL
 from email.mime.text import MIMEText
 import logging
 
-smtp_server = None
+smtp_server: SMTP_SSL
 
 
 def init(host, port, username, password):
     global smtp_server
 
     try:
-        smtp_server = smtplib.SMTP_SSL(host, port)
+        smtp_server = SMTP_SSL(host, port)
         smtp_server.login(username, password)
     except Exception as e:
         logging.error('Could not connect to email server!')

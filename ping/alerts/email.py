@@ -1,12 +1,15 @@
 from smtplib import SMTP_SSL
 from email.mime.text import MIMEText
 import logging
+import socket
 
 smtp_server: SMTP_SSL
 
 
 def init(host, port, username, password):
     global smtp_server
+
+    socket.setdefaulttimeout(10)
 
     try:
         smtp_server = SMTP_SSL(host, port)

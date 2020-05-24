@@ -1,3 +1,4 @@
+import smtplib
 from smtplib import SMTP_SSL
 from email.mime.text import MIMEText
 import logging
@@ -41,4 +42,7 @@ def close():
         logging.error("Email server not initialized!")
         return
 
-    smtp_server.quit()
+    try:
+        smtp_server.quit()
+    except smtplib.SMTPServerDisconnected:
+        logging.warning("Could not close smtp connection.")

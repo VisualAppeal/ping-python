@@ -35,6 +35,13 @@ def check_http(url, timeout=3, validate_ssl=True):
             "success": False,
             "message": str(e)
         }
+    except requests.exceptions.Timeout as e:
+        logging.warning(e)
+
+        return {
+            "success": False,
+            "message": str(e)
+        }
 
     logging.debug("No HTTP error.")
 

@@ -1,4 +1,5 @@
 import logging
+import sys
 from urllib.request import ssl, socket
 from urllib.parse import urlparse
 from datetime import datetime, timezone
@@ -41,6 +42,13 @@ def check_http(url, timeout=3, validate_ssl=True):
         return {
             "success": False,
             "message": str(e)
+        }
+    except:
+        logging.warning(str(sys.exc_info()[0]))
+
+        return {
+            "success": False,
+            "message": str(sys.exc_info()[0])
         }
 
     logging.debug("No HTTP error.")

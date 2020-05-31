@@ -16,39 +16,39 @@ def check_http(url, timeout=3, validate_ssl=True):
         response.raise_for_status()
     except requests.exceptions.SSLError as e:
         if not validate_ssl:
-            logging.info("Ignoring ssl error: %s" % e)
+            logging.info("Ignoring ssl error: %s" % e.strerror)
 
             return {
                 "success": True,
-                "message": str(e)
+                "message": "Warning while validating ssl certificate: " + e.strerror
             }
 
         logging.warning(e)
 
         return {
             "success": False,
-            "message": repr(e)
+            "message": "Error while validating ssl certificate: " + e.strerror
         }
     except requests.exceptions.HTTPError as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": repr(e)
+            "message": "HTTP error: " + e.strerror
         }
     except requests.exceptions.Timeout as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": repr(e)
+            "message": "Timeout: " + e.strerror
         }
     except:
         logging.warning(repr(sys.exc_info()[0]))
 
         return {
             "success": False,
-            "message": repr(sys.exc_info()[0])
+            "message": "Generic error while checking https website: " + str(sys.exc_info()[0])
         }
 
     logging.debug("No HTTP error.")

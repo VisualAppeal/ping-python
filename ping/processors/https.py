@@ -27,28 +27,28 @@ def check_http(url, timeout=3, validate_ssl=True):
 
         return {
             "success": False,
-            "message": str(e)
+            "message": repr(e)
         }
     except requests.exceptions.HTTPError as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": str(e)
+            "message": repr(e)
         }
     except requests.exceptions.Timeout as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": str(e)
+            "message": repr(e)
         }
     except:
-        logging.warning(str(sys.exc_info()[0]))
+        logging.warning(repr(sys.exc_info()[0]))
 
         return {
             "success": False,
-            "message": str(sys.exc_info()[0])
+            "message": repr(sys.exc_info()[0])
         }
 
     logging.debug("No HTTP error.")

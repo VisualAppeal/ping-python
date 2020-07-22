@@ -229,14 +229,6 @@ version = "1.0.3"
 
 [[package]]
 category = "main"
-description = "SSL wrapper for socket objects (2.3, 2.4, 2.5 compatible)"
-name = "ssl"
-optional = false
-python-versions = "*"
-version = "1.16"
-
-[[package]]
-category = "main"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 name = "urllib3"
 optional = false
@@ -269,7 +261,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e1c153abdfebbb9fc3583c11a03efe32d1612af211e36665fac2192a16301f26"
+content-hash = "fa6e43ab2808bab591ad4ee49dfac057a24fb4b6dc56fa3800368b1f370cfb77"
 lock-version = "1.0"
 python-versions = ">=3.6"
 
@@ -354,9 +346,6 @@ six = [
 slack-webhook = [
     {file = "slack-webhook-1.0.3.tar.gz", hash = "sha256:babf36c4921e848ba70a77eeb57ae9e781a8d9bca10d2688515092006477f25a"},
     {file = "slack_webhook-1.0.3-py3-none-any.whl", hash = "sha256:5efd898c1d4befbd45ee00c7cf29e2b1676278e8d6ae9212ece993b9d35f4caa"},
-]
-ssl = [
-    {file = "ssl-1.16.tar.gz", hash = "sha256:ac21156fee6aee9eb8d765bbb16f5f49492d81ff4b22f7b8fc001d2251120930"},
 ]
 urllib3 = [
     {file = "urllib3-1.22-py2.py3-none-any.whl", hash = "sha256:06330f386d6e4b195fbfc736b297f58c5a892e4440e54d294d7004e3a9bbea1b"},

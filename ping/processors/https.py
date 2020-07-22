@@ -67,31 +67,37 @@ def check_ssl_expiration(url, days):
     port = 443
     context = ssl.create_default_context()
 
-    with socket.create_connection((hostname, port), timeout=3) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-            cert_details = ssock.getpeercert()
+    try:
+        with socket.create_connection((hostname, port), timeout=3) as sock:
+            with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+                cert_details = ssock.getpeercert()
 
-            if "notAfter" not in cert_details:
+                if "notAfter" not in cert_details:
+                    return {
+                        "success": False,
+                        "message": "No 'notAfter' field in certificate!"
+                    }
+
+                not_after = parser.parse(cert_details["notAfter"])
+                diff_days = (not_after - datetime.now(timezone.utc)).days
+
+                logging.debug("Certificate valid for %d days." % diff_days)
+
+                if diff_days < days:
+                    return {
+                        "success": False,
+                        "message": "Certificate for %s only valid for %d days!" % (url, diff_days)
+                    }
+
                 return {
-                    "success": False,
-                    "message": "No 'notAfter' field in certificate!"
+                    "success": True,
+                    "message": None
                 }
-
-            not_after = parser.parse(cert_details["notAfter"])
-            diff_days = (not_after - datetime.now(timezone.utc)).days
-
-            logging.debug("Certificate valid for %d days." % diff_days)
-
-            if diff_days < days:
-                return {
-                    "success": False,
-                    "message": "Certificate for %s only valid for %d days!" % (url, diff_days)
-                }
-
-            return {
-                "success": True,
-                "message": None
-            }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": "Could not create connection to %s: %s" % (url, repr(e))
+        }
 
 
 def process(site):

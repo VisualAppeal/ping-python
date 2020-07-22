@@ -13,8 +13,11 @@ from .processors import https as process_https
 settings = {}
 
 
-def send_alert(site_name, check_type, message):
+def send_alert(site_name: str, check_type: str, message: str) -> None:
     global settings
+
+    if not "alerts" in settings:
+        raise Exception("%s: %s" % (site_name, message))
 
     for alert in settings["alerts"]:
         subject = "%s (%s)" % (site_name, check_type)
@@ -32,14 +35,16 @@ def send_alert(site_name, check_type, message):
             raise e
 
 
-def check_site(site):
+def check_site(site: dict) -> list:
     logging.info("Processing " + site["name"] + "...")
+
+    responses = []
 
     # Get the number of checks to perform
     check_count = len(site["checks"])
     if check_count == 0:
         logging.warning("No checks to perform!")
-        return
+        return responses
 
     current_check = 0
 
@@ -72,10 +77,17 @@ def check_site(site):
 
         # Send alert on error
         if not result["success"]:
-            send_alert(site["name"], check["type"], result["message"])
+            try:
+                send_alert(site["name"], check["type"], result["message"])
+            except:
+                pass
+
+        responses.append(result)
+
+    return responses
 
 
-def start_checks():
+def start_checks() -> None:
     global settings
 
     filename = os.path.dirname(os.path.realpath(__file__)) + "/../settings.json"

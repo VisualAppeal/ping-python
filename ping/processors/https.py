@@ -16,32 +16,32 @@ def check_http(url, timeout=3, validate_ssl=True):
         response.raise_for_status()
     except requests.exceptions.SSLError as e:
         if not validate_ssl:
-            logging.info("Ignoring ssl error: %s" % str(e.strerror))
+            logging.info("Ignoring ssl error: %s" % repr(e))
 
             return {
                 "success": True,
-                "message": "Warning while validating ssl certificate: " + str(e.strerror)
+                "message": "Warning while validating ssl certificate: " + repr(e)
             }
 
         logging.warning(e)
 
         return {
             "success": False,
-            "message": "Error while validating ssl certificate: " + str(e.strerror)
+            "message": "Error while validating ssl certificate: " + repr(e)
         }
     except requests.exceptions.HTTPError as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": "HTTP error: " + str(e.strerror)
+            "message": "HTTP error: " + repr(e)
         }
     except requests.exceptions.Timeout as e:
         logging.warning(e)
 
         return {
             "success": False,
-            "message": "Timeout: " + str(e.strerror)
+            "message": "Timeout: " + repr(e)
         }
     except:
         logging.warning(repr(sys.exc_info()[0]))

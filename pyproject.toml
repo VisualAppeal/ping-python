@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ping-python"
+version = "0.2.0"
+description = ""
+authors = ["Tim Helfensdörfer <tim@visualappeal.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+certifi = "^2020.6.20"
+coloredlogs = "^14.0"
+slack_webhook = "^1.0.3"
+python-dateutil = "^2.8.1"
+requests = "^2.24.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.4.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

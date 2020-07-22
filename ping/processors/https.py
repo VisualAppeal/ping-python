@@ -43,12 +43,12 @@ def check_http(url, timeout=3, validate_ssl=True):
             "success": False,
             "message": "Timeout: " + repr(e)
         }
-    except:
-        logging.warning(repr(sys.exc_info()[0]))
+    except Exception as e:
+        logging.warning(repr(e))
 
         return {
             "success": False,
-            "message": "Generic error while checking https website: " + str(sys.exc_info()[0])
+            "message": "Generic error while checking https website: " + repr(e)
         }
 
     logging.debug("No HTTP error.")
